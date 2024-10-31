@@ -139,7 +139,7 @@
                     <div class="list-content">
                         <small><i class="fa-solid fa-money-bill-wave"></i> R$ ${listTotalValue}</small>
                         <div>
-                            <button class="copy-btn me-2" onclick="copyList(${index})" title="Comprar Novamente">
+                            <button class="copy-btn me-2 text-primary" onclick="copyList(${index})" title="Comprar Novamente">
                                 <i class="fa-solid fa-cart-arrow-down"></i>
                             </button>
                             <button class="delete-btn text-danger" onclick="deleteList(${index})" title="Excluir Lista">
@@ -151,7 +151,7 @@
                         <ul class="list-group mt-2">
                             ${list.items.map(item => `
                                 <li class="list-group-item small">
-                                    ${item.name} (${item.unit}) - Qtd: ${item.quantity} - Unitário: R$ ${item.price.toFixed(2)} - Total: R$ ${(item.quantity * item.price).toFixed(2)}
+                                    ${item.name} (${item.unit}) - ${item.quantity} x <span class="fw-bold">R$ ${item.price.toFixed(2)}</span> <span class="fw-bold float-end">Total: R$ ${(item.quantity * item.price).toFixed(2)}<span>
                                 </li>
                             `).join('')}
                         </ul>

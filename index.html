@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listas Salvas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            margin-top: 20px;
+            max-width: 800px;
+        }
+        .list-group-item .item-details {
+            display: none; /* Itens escondidos por padrão */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container mt-0">
+            <a class="navbar-brand fs-4" style="color: #C71585;" href="/"><i class="fa-solid fa-store"></i> SUPER COMPRAS</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/new.html">
+                            Criar Lista
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Container Principal -->
+    <div class="container mb-4">
+        <h2 class="mb-4 text-center">Minhas Listas</h2>
+
+        <!-- Filtro por Data -->
+        <div class="row mb-3">
+            <div class="col mt-2">
+                <label for="dateFrom" class="form-label">De:</label>
+                <input type="date" id="dateFrom" class="form-control" required>
+            </div>
+            <div class="col mt-2">
+                <label for="dateTo" class="form-label">Até:</label>
+                <input type="date" id="dateTo" class="form-control" required>
+            </div>
+            <div class="col col-sm-auto align-self-end mt-2">
+                <button class="btn btn-primary w-100" onclick="filterListsByDate()">
+                    <i class="fa-solid fa-filter"></i> Filtrar
+                </button>
+            </div>
+        </div>
+
+        <!-- Exibição das Listas Filtradas -->
+        <ul id="filteredLists" class="list-group mb-3"></ul>
+
+        <!-- Exibição do Total -->
+        <div id="totalContainer" class="alert alert-info text-center" role="alert">
+            Total das Listas no Período: R$ <span id="totalValue">0.00</span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Inicializar as datas do filtro com o padrão do primeiro dia do mês até hoje
+        document.addEventListener("DOMContentLoaded", function() {
+            const now = new Date();
+            document.getElementById("dateFrom").value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
+            document.getElementById("dateTo").value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+            filterListsByDate(); // Filtrar ao carregar a página
+        });
+
+        // Função para filtrar as listas de acordo com o intervalo de datas sem conversão de data
+        function filterListsByDate() {
+            const fromDateStr = document.getElementById("dateFrom").value;
+            const toDateStr = document.getElementById("dateTo").value;
+
+            const allLists = JSON.parse(localStorage.getItem("allShoppingLists")) || [];
+
+            // Filtrar as listas pelo intervalo de datas diretamente com strings
+            const filteredLists = allLists.filter(list => {
+                const listDateStr = list.date.split(" ")[0]; // Extrai apenas a parte da data (YYYY-MM-DD)
+                return listDateStr >= fromDateStr && listDateStr <= toDateStr;
+            });
+
+            // Exibir as listas filtradas e calcular o total
+            displayFilteredLists(filteredLists);
+            calculateTotalValue(filteredLists);
+        }
+
+        // Exibir as listas filtradas na página
+        function displayFilteredLists(filteredLists) {
+            const filteredListsContainer = document.getElementById("filteredLists");
+            filteredListsContainer.innerHTML = ""; // Limpa a lista antes de adicionar novas entradas
+
+            if (filteredLists.length === 0) {
+                filteredListsContainer.innerHTML = "<li class='list-group-item text-center'>Nenhuma lista encontrada para este intervalo.</li>";
+                return;
+            }
+
+            filteredLists.forEach((list, index) => {
+                const listTotalValue = list.items.reduce((sum, item) => sum + (item.quantity * item.price), 0).toFixed(2);
+
+                // Criação do item da lista com nome, data e valor total
+                const listItem = document.createElement("li");
+                listItem.classList.add("list-group-item");
+                listItem.innerHTML = `
+                    <div style="cursor: pointer;" onclick="toggleItemDetails(${index})">
+                        <strong class="d-block">${list.name}</strong>
+                        <small>
+                            <i class="fa-regular fa-calendar-days"></i> ${list.date.split(" ")[0]}
+                            <span class="float-end"><i class="fa-solid fa-money-bill-wave"></i> R$ ${listTotalValue}</span>
+                        <small>
+                    </div>
+                    <div class="item-details mt-2" id="details-${index}">
+                        <ul class="list-group mt-2">
+                            ${list.items.map(item => `
+                                <li class="list-group-item">
+                                    ${item.name} (${item.unit}) - Qtd: ${item.quantity} - Unitário: R$ ${item.price.toFixed(2)} - Total: R$ ${(item.quantity * item.price).toFixed(2)}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+                filteredListsContainer.appendChild(listItem);
+            });
+        }
+
+        // Função para mostrar ou esconder detalhes dos itens da lista
+        function toggleItemDetails(index) {
+            const details = document.getElementById(`details-${index}`);
+            details.style.display = details.style.display === "none" || details.style.display === "" ? "block" : "none";
+        }
+
+        // Função para calcular o valor total das listas filtradas
+        function calculateTotalValue(filteredLists) {
+            const totalValue = filteredLists.reduce((sum, list) => {
+                return sum + list.items.reduce((itemSum, item) => itemSum + (item.quantity * item.price), 0);
+            }, 0);
+            document.getElementById("totalValue").textContent = totalValue.toFixed(2);
+        }
+    </script>
+</body>
+</html>

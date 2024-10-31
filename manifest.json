@@ -1,0 +1,22 @@
+{
+    "name": "Super Compras",
+    "short_name": "SuperCompras",
+    "description": "Um aplicativo de lista de compras para facilitar suas compras!",
+    "start_url": "/super-compras/index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#C71585",
+    "icons": [
+      {
+        "src": "/super-compras/icons/icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/super-compras/icons/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  

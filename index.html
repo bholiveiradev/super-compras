@@ -151,7 +151,7 @@
                         <ul class="list-group mt-2">
                             ${list.items.map(item => `
                                 <li class="list-group-item small">
-                                    ${item.name} (${item.unit}) - ${item.quantity} x <span class="fw-bold">R$ ${item.price.toFixed(2)}</span> <span class="fw-bold float-end">Total: R$ ${(item.quantity * item.price).toFixed(2)}<span>
+                                    ${item.name} (${item.unit}) - ${item.quantity} x <span class="fw-bold">R$ ${item.price.toFixed(2)}</span> <span class="fw-bold float-end">R$ ${(item.quantity * item.price).toFixed(2)}<span>
                                 </li>
                             `).join('')}
                         </ul>

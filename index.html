@@ -18,10 +18,10 @@
         .list-group-item .item-details {
             display: none; /* Itens escondidos por padrão */
         }
-        .delete-btn {
+        .delete-btn, .copy-btn {
             border: none;
             background: none;
-            color: #dc3545;
+            color: #6c757d;
             cursor: pointer;
         }
         .list-content {
@@ -126,7 +126,7 @@
             filteredLists.forEach((list, index) => {
                 const listTotalValue = list.items.reduce((sum, item) => sum + (item.quantity * item.price), 0).toFixed(2);
 
-                // Criação do item da lista com nome, data formatada, valor total e botão de exclusão
+                // Criação do item da lista com nome, data formatada, valor total e botões de "Excluir" e "Comprar Novamente"
                 const listItem = document.createElement("li");
                 listItem.classList.add("list-group-item");
                 listItem.innerHTML = `
@@ -138,9 +138,14 @@
                     </div>
                     <div class="list-content">
                         <small><i class="fa-solid fa-money-bill-wave"></i> R$ ${listTotalValue}</small>
-                        <button class="delete-btn" onclick="deleteList(${index})" title="Excluir Lista">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
+                        <div>
+                            <button class="copy-btn me-2" onclick="copyList(${index})" title="Comprar Novamente">
+                                <i class="fa-solid fa-cart-arrow-down"></i>
+                            </button>
+                            <button class="delete-btn" onclick="deleteList(${index})" title="Excluir Lista">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="item-details mt-2" id="details-${index}">
                         <ul class="list-group mt-2">
@@ -176,6 +181,28 @@
             allLists.splice(index, 1); // Remove a lista pelo índice
             localStorage.setItem("allShoppingLists", JSON.stringify(allLists)); // Atualiza o localStorage
             filterListsByDate(); // Atualiza a exibição das listas após a exclusão
+        }
+
+        // Função para copiar uma lista e criar uma nova com valores zerados
+        function copyList(index) {
+            const allLists = JSON.parse(localStorage.getItem("allShoppingLists")) || [];
+            const originalList = allLists[index];
+
+            const newItems = originalList.items.map(item => ({
+                ...item,
+                price: 0,
+                total: 0
+            }));
+
+            const newList = {
+                name: `${originalList.name} (Cópia)`,
+                date: new Date().toISOString().split("T")[0], // Data atual no formato YYYY-MM-DD
+                items: newItems
+            };
+
+            localStorage.setItem("currentShoppingList", JSON.stringify(newList.items));
+            alert(`Lista "${originalList.name}" copiada para uma nova compra!`);
+            window.location.href = "/super-compras/new.html"; // Redireciona para a página de nova lista
         }
     </script>
 </body>

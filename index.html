@@ -145,7 +145,7 @@
                     <div class="item-details mt-2" id="details-${index}">
                         <ul class="list-group mt-2">
                             ${list.items.map(item => `
-                                <li class="list-group-item">
+                                <li class="list-group-item small">
                                     ${item.name} (${item.unit}) - Qtd: ${item.quantity} - Unitário: R$ ${item.price.toFixed(2)} - Total: R$ ${(item.quantity * item.price).toFixed(2)}
                                 </li>
                             `).join('')}

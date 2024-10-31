@@ -175,19 +175,19 @@
         function updateShoppingList() {
             const shoppingList = document.getElementById("shoppingList");
             shoppingList.innerHTML = "";
-            itemList.forEach(item => {
+            itemList.forEach((item, index) => {
                 const listItem = document.createElement("li");
                 listItem.classList.add("list-group-item");
                 listItem.innerHTML = `
                     <span>
-                        <strong>${item.name}</strong> - ${item.quantity} ${item.unit}
+                        <strong>${index + 1}. ${item.name}</strong> - ${item.quantity} ${item.unit}
                         <div class="product-info">Valor: R$${item.total.toFixed(2)}</div>
                     </span>
                     <div>
                         <button class="btn-no-border" onclick="openEditModal(${item.id})" title="Editar">
                             <i class="fa-solid fa-pen-to-square"></i> 
                         </button>
-                        <button class="btn-no-border ms-2" onclick="removeItem(${item.id})" title="Remover">
+                        <button class="btn-no-border ms-2 text-danger" onclick="removeItem(${item.id})" title="Remover">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
@@ -210,7 +210,6 @@
                 document.getElementById("editItemQuantity").value = item.quantity;
                 document.getElementById("editItemPrice").value = item.price;
     
-                // Adiciona o evento para apagar o valor se ele for zero
                 const editItemPriceField = document.getElementById("editItemPrice");
                 editItemPriceField.addEventListener("focus", function() {
                     if (parseFloat(editItemPriceField.value) === 0) {
@@ -249,19 +248,16 @@
             totalPrice.textContent = totalCost.toFixed(2);
         }
 
-        // Função para remover um item da lista
         function removeItem(id) {
             itemList = itemList.filter(item => item.id !== id);
             saveCurrentList();
             updateShoppingList();
         }
 
-        // Função para salvar a lista atual no localStorage
         function saveCurrentList() {
             localStorage.setItem("currentShoppingList", JSON.stringify(itemList));
         }
 
-        // Função para salvar lista completa com nome e data, impedindo salvamento se total for zero
         document.getElementById("listNameForm").addEventListener("submit", function(event) {
             event.preventDefault();
             const listName = document.getElementById("listName").value;
@@ -269,6 +265,15 @@
 
             if (!listName) {
                 alert("Por favor, insira um nome para a lista.");
+                return;
+            }
+
+            const zeroValueItems = itemList
+                .filter(item => item.price === 0)
+                .map(item => `${itemList.indexOf(item) + 1}. ${item.name}`);
+
+            if (zeroValueItems.length > 0) {
+                alert(`Os seguintes itens estão com valor zerado:\n${zeroValueItems.join('\n')}\nPor favor, edite-os antes de salvar.`);
                 return;
             }
 
@@ -291,7 +296,6 @@
             allLists.push(newList);
             localStorage.setItem("allShoppingLists", JSON.stringify(allLists));
 
-            // Limpa a lista atual para iniciar uma nova
             itemList = [];
             saveCurrentList();
             updateShoppingList();
@@ -300,7 +304,6 @@
             bootstrap.Modal.getInstance(document.getElementById("listNameModal")).hide();
         });
 
-        // Carregar a lista atual do localStorage quando a página é carregada
         updateShoppingList();
     </script>
 </body>

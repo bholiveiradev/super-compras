@@ -42,11 +42,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/super-compras/new.html">
-                            Criar Lista
-                        </a>
+                        <a class="nav-link" href="/super-compras/new.html">Criar Lista</a>
                     </li>
                 </ul>
             </div>
@@ -111,6 +107,12 @@
             calculateTotalValue(filteredLists);
         }
 
+        // Função para formatar a data no formato DD/MM/YYYY
+        function formatDate(dateStr) {
+            const [year, month, day] = dateStr.split("-");
+            return `${day}/${month}/${year}`;
+        }
+
         // Exibir as listas filtradas na página
         function displayFilteredLists(filteredLists) {
             const filteredListsContainer = document.getElementById("filteredLists");
@@ -124,7 +126,7 @@
             filteredLists.forEach((list, index) => {
                 const listTotalValue = list.items.reduce((sum, item) => sum + (item.quantity * item.price), 0).toFixed(2);
 
-                // Criação do item da lista com nome, data, valor total e botão de exclusão
+                // Criação do item da lista com nome, data formatada, valor total e botão de exclusão
                 const listItem = document.createElement("li");
                 listItem.classList.add("list-group-item");
                 listItem.innerHTML = `
@@ -132,7 +134,7 @@
                         <strong>${list.name}</strong>
                     </div>
                     <div onclick="toggleItemDetails(${index})" style="cursor: pointer;">
-                        <small class="d-block"><i class="fa-regular fa-calendar-days"></i> ${list.date.split(" ")[0]}</small>
+                        <small class="d-block"><i class="fa-regular fa-calendar-days"></i> ${formatDate(list.date.split(" ")[0])}</small>
                     </div>
                     <div class="list-content">
                         <small><i class="fa-solid fa-money-bill-wave"></i> R$ ${listTotalValue}</small>

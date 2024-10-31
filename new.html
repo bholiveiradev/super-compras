@@ -33,6 +33,12 @@
             margin-bottom: 5px;
             color: #6c757d;
         }
+        .btn-no-border {
+            border: none;
+            background: none;
+            color: #6c757d;
+            cursor: pointer;
+        }
         #saveButton {
             display: none;
         }
@@ -49,11 +55,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/super-compras/">
-                            Minhas Listas
-                        </a>
+                        <a class="nav-link" href="/super-compras/">Minhas Listas</a>
                     </li>
                 </ul>
             </div>
@@ -96,8 +98,7 @@
         
         <!-- Botão Salvar Lista -->
         <button class="btn btn-success w-100 mt-4" id="saveButton" data-bs-toggle="modal" data-bs-target="#listNameModal">
-            <i class="fa-solid fa-list"></i>
-            Salvar Lista
+            <i class="fa-solid fa-list"></i> Salvar Lista
         </button>
     </div>
 
@@ -115,9 +116,7 @@
                             <label for="listName" class="form-label">Nome da Lista</label>
                             <input type="text" class="form-control" id="listName" required>
                         </div>
-                        <button type="submit" class="btn btn-success w-100">
-                            Salvar
-                        </button>
+                        <button type="submit" class="btn btn-success w-100">Salvar</button>
                     </form>
                 </div>
             </div>
@@ -144,9 +143,7 @@
                         <div class="mb-3">
                             <input placeholder="Preço Unitário (R$)" type="number" class="form-control" id="editItemPrice" step="0.01">
                         </div>
-                        <button type="submit" class="btn btn-success w-100">
-                            Salvar Item
-                        </button>
+                        <button type="submit" class="btn btn-success w-100">Salvar Item</button>
                     </form>
                 </div>
             </div>
@@ -187,10 +184,10 @@
                         <div class="product-info">Valor: R$${item.total.toFixed(2)}</div>
                     </span>
                     <div>
-                        <button class="btn btn-outline-secondary btn-sm" onclick="openEditModal(${item.id})">
+                        <button class="btn-no-border" onclick="openEditModal(${item.id})" title="Editar">
                             <i class="fa-solid fa-pen-to-square"></i> 
                         </button>
-                        <button class="btn btn-outline-danger btn-sm ms-2" onclick="removeItem(${item.id})">
+                        <button class="btn-no-border ms-2" onclick="removeItem(${item.id})" title="Remover">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
@@ -264,13 +261,19 @@
             localStorage.setItem("currentShoppingList", JSON.stringify(itemList));
         }
 
-        // Função para salvar lista completa com nome e data
+        // Função para salvar lista completa com nome e data, impedindo salvamento se total for zero
         document.getElementById("listNameForm").addEventListener("submit", function(event) {
             event.preventDefault();
             const listName = document.getElementById("listName").value;
+            const totalValue = parseFloat(totalPrice.textContent);
 
             if (!listName) {
                 alert("Por favor, insira um nome para a lista.");
+                return;
+            }
+
+            if (totalValue === 0) {
+                alert("O total da lista está zerado. Edite os itens para incluir valores antes de salvar.");
                 return;
             }
 

@@ -18,6 +18,17 @@
         .list-group-item .item-details {
             display: none; /* Itens escondidos por padrão */
         }
+        .delete-btn {
+            border: none;
+            background: none;
+            color: #dc3545;
+            cursor: pointer;
+        }
+        .list-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -113,16 +124,21 @@
             filteredLists.forEach((list, index) => {
                 const listTotalValue = list.items.reduce((sum, item) => sum + (item.quantity * item.price), 0).toFixed(2);
 
-                // Criação do item da lista com nome, data e valor total
+                // Criação do item da lista com nome, data, valor total e botão de exclusão
                 const listItem = document.createElement("li");
                 listItem.classList.add("list-group-item");
                 listItem.innerHTML = `
-                    <div style="cursor: pointer;" onclick="toggleItemDetails(${index})">
-                        <strong class="d-block">${list.name}</strong>
-                        <small>
-                            <i class="fa-regular fa-calendar-days"></i> ${list.date.split(" ")[0]}
-                            <span class="float-end"><i class="fa-solid fa-money-bill-wave"></i> R$ ${listTotalValue}</span>
-                        <small>
+                    <div onclick="toggleItemDetails(${index})" style="cursor: pointer;">
+                        <strong>${list.name}</strong>
+                    </div>
+                    <div onclick="toggleItemDetails(${index})" style="cursor: pointer;">
+                        <small class="d-block"><i class="fa-regular fa-calendar-days"></i> ${list.date.split(" ")[0]}</small>
+                    </div>
+                    <div class="list-content">
+                        <small><i class="fa-solid fa-money-bill-wave"></i> R$ ${listTotalValue}</small>
+                        <button class="delete-btn" onclick="deleteList(${index})" title="Excluir Lista">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
                     <div class="item-details mt-2" id="details-${index}">
                         <ul class="list-group mt-2">
@@ -150,6 +166,14 @@
                 return sum + list.items.reduce((itemSum, item) => itemSum + (item.quantity * item.price), 0);
             }, 0);
             document.getElementById("totalValue").textContent = totalValue.toFixed(2);
+        }
+
+        // Função para deletar uma lista do localStorage
+        function deleteList(index) {
+            let allLists = JSON.parse(localStorage.getItem("allShoppingLists")) || [];
+            allLists.splice(index, 1); // Remove a lista pelo índice
+            localStorage.setItem("allShoppingLists", JSON.stringify(allLists)); // Atualiza o localStorage
+            filterListsByDate(); // Atualiza a exibição das listas após a exclusão
         }
     </script>
 </body>

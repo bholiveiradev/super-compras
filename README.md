@@ -6,3 +6,6 @@ Um APP simples de lista de compras que fiz para minha esposa utilizar nas compra
 - CSS
 - JavaScript
 - Bootstrap
+
+### Link para o app
+[supercompras](https://bholiveiradev.github.io/super-compras/)

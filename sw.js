@@ -1,4 +1,4 @@
-const CACHE_NAME = 'super-compras-v1.2';
+const CACHE_NAME = 'super-compras-v1.2.2';
 const urlsToCache = [
   '/super-compras/',
   '/super-compras/index.html',

@@ -1,318 +1,489 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Super Compras - Criar Lista</title>
-    <link rel="manifest" href="/super-compras/manifest.json">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
-    <link rel="icon" href="/super-compras/icons/favicon.png" type="image/png">
+    <link rel="manifest" href="/super-compras/manifest.json" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    />
+    <link rel="icon" href="/super-compras/icons/favicon.png" type="image/png" />
     <style>
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-        }
-        .container {
-            margin-top: 20px;
-            max-width: 600px;
-        }
-        .total-section {
-            background-color: #e9ecef;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .total-values {
-            font-weight: bold;
-        }
-        .list-group-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .product-info {
-            margin-bottom: 5px;
-            color: #6c757d;
-        }
-        .btn-no-border {
-            border: none;
-            background: none;
-            color: #6c757d;
-            cursor: pointer;
-        }
-        #saveButton {
-            display: none;
-        }
+      body {
+        background-color: #f5f5f5;
+        color: #333;
+      }
+      .container {
+        margin-top: 20px;
+        max-width: 600px;
+      }
+      .total-section {
+        background-color: #e9ecef;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .total-values {
+        font-weight: bold;
+      }
+      .list-group-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .product-info {
+        margin-bottom: 5px;
+        color: #6c757d;
+      }
+      .btn-no-border {
+        border: none;
+        background: none;
+        color: #6c757d;
+        cursor: pointer;
+      }
+      #saveButton {
+        display: none;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container mt-0">
-            <a class="navbar-brand fs-5 fw-bold" style="color: #C71585;" href="/super-compras/"><i class="fa-solid fa-store"></i> SUPER COMPRAS</a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/super-compras/">Minhas Listas</a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container mt-0">
+        <a
+          class="navbar-brand fs-5 fw-bold"
+          style="color: #c71585"
+          href="/super-compras/"
+          ><i class="fa-solid fa-store"></i> SUPER COMPRAS</a
+        >
+        <button
+          class="navbar-toggler border-0"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/super-compras/">Minhas Listas</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <!-- Container Principal -->
     <div class="container mb-4">
-        <h1 class="mb-4 text-left fs-5">Criar Lista</h1>
-        
-        <!-- Total Items Section -->
-        <div class="total-section" id="totalSection">
-            <div class="d-flex justify-content-between total-values">
-                <span><i class="fa-solid fa-cart-shopping text-danger"></i> <span id="totalItems">0</span> Itens</span>
-                <span><i class="fa-solid fa-money-bill-wave text-success"></i> R$ <span id="totalPrice">0.00</span></span>
-            </div>
+      <h1 class="mb-4 text-left fs-5">Criar Lista</h1>
+
+      <!-- Total Items Section -->
+      <div class="total-section" id="totalSection">
+        <div class="d-flex justify-content-between total-values">
+          <span
+            ><i class="fa-solid fa-cart-shopping text-danger"></i>
+            <span id="totalItems">0</span> Itens</span
+          >
+          <span
+            ><i class="fa-solid fa-money-bill-wave text-success"></i> R$
+            <span id="totalPrice">0.00</span></span
+          >
         </div>
+      </div>
 
-        <!-- Formulário de Cadastro -->
-        <form id="addItemForm">
-            <div class="mb-3">
-                <input placeholder="Nome do Produto" type="text" class="form-control" id="itemName" required>
-            </div>
-            <div class="mb-3">
-                <input placeholder="Quantidade" type="number" class="form-control" id="itemQuantity" step="0.001" required>
-            </div>
-            <div class="mb-3">
-                <select class="form-select" id="itemUnit" required>
-                    <option value="un" selected>Unidade (un)</option>
-                    <option value="kg">Quilograma (kg)</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">
-                <i class="fa-solid fa-circle-down"></i>
-            </button>
-        </form>
-
-        <!-- Lista de Compras -->
-        <ul class="list-group mt-4" id="shoppingList"></ul>
-        
-        <!-- Botão Salvar Lista -->
-        <button class="btn btn-success w-100 mt-4" id="saveButton" data-bs-toggle="modal" data-bs-target="#listNameModal">
-            <i class="fa-solid fa-list"></i> Salvar Lista
+      <!-- Formulário de Cadastro -->
+      <form id="addItemForm">
+        <div class="mb-3">
+          <label for="itemName" class="form-label"
+            ><strong>Nome do Produto:</strong></label
+          >
+          <input
+            placeholder="Nome do Produto:"
+            type="text"
+            class="form-control"
+            id="itemName"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="itemQuantity" class="form-label"
+            ><strong>Quantidade:</strong></label
+          >
+          <input
+            placeholder="Quantidade:"
+            type="number"
+            class="form-control"
+            id="itemQuantity"
+            step="0.001"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="itemUnit" class="form-label"
+            ><strong>Unidade:</strong></label
+          >
+          <select class="form-select" id="itemUnit" required>
+            <option value="un" selected>Unidade (un)</option>
+            <option value="kg">Quilograma (kg)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">
+          <i class="fa-solid fa-circle-down"></i>
+          Adicionar Item
         </button>
+      </form>
+
+      <!-- Lista de Compras -->
+      <ul class="list-group mt-4" id="shoppingList"></ul>
+
+      <!-- Botão Salvar Lista -->
+      <button
+        class="btn btn-success w-100 mt-4"
+        id="saveButton"
+        data-bs-toggle="modal"
+        data-bs-target="#listNameModal"
+      >
+        <i class="fa-solid fa-list"></i> Salvar Lista
+      </button>
     </div>
 
     <!-- Modal para Nome da Lista -->
-    <div class="modal fade" id="listNameModal" tabindex="-1" aria-labelledby="listNameModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="listNameModalLabel">Salvar Lista de Compras</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="listNameForm">
-                        <div class="mb-3">
-                            <label for="listName" class="form-label">Nome da Lista</label>
-                            <input type="text" class="form-control" id="listName" required>
-                        </div>
-                        <button type="submit" class="btn btn-success w-100">Salvar</button>
-                    </form>
-                </div>
-            </div>
+    <div
+      class="modal fade"
+      id="listNameModal"
+      tabindex="-1"
+      aria-labelledby="listNameModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="listNameModalLabel">
+              Salvar Lista de Compras
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="listNameForm">
+              <div class="mb-3">
+                <label for="listName" class="form-label">Nome da Lista</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="listName"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-success w-100">
+                Salvar
+              </button>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Modal para Editar Produto -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Editar Item</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editItemForm">
-                        <input type="hidden" id="editItemId">
-                        <div class="mb-3">
-                            <input placeholder="Nome do Produto" type="text" class="form-control" id="editItemName" required>
-                        </div>
-                        <div class="mb-3">
-                            <input placeholder="Quantidade" type="number" class="form-control" id="editItemQuantity" step="0.001" required>
-                        </div>
-                        <div class="mb-3">
-                            <input placeholder="Preço Unitário (R$)" type="number" class="form-control" id="editItemPrice" step="0.01">
-                        </div>
-                        <button type="submit" class="btn btn-success w-100">Salvar Item</button>
-                    </form>
-                </div>
-            </div>
+    <div
+      class="modal fade"
+      id="editModal"
+      tabindex="-1"
+      aria-labelledby="editModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Editar Item</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editItemForm">
+              <input type="hidden" id="editItemId" />
+              <div class="mb-3">
+                <label for="editItemName" class="form-label"
+                  ><strong>Nome do Produto:</strong></label
+                >
+                <input
+                  placeholder="Nome do Produto"
+                  type="text"
+                  class="form-control"
+                  id="editItemName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editItemQuantity" class="form-label"
+                  ><strong>Quantidade:</strong></label
+                >
+                <input
+                  placeholder="Quantidade"
+                  type="number"
+                  class="form-control"
+                  id="editItemQuantity"
+                  step="0.001"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editItemPrice" class="form-label"
+                  ><strong>Preço Unitário (R$):</strong></label
+                >
+                <input
+                  placeholder="Preço Unitário (R$)"
+                  type="number"
+                  class="form-control"
+                  id="editItemPrice"
+                  step="0.01"
+                />
+              </div>
+              <button type="submit" class="btn btn-success w-100">
+                Salvar Item
+              </button>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let itemList = JSON.parse(localStorage.getItem("currentShoppingList")) || [];
-        const totalSection = document.getElementById("totalSection");
-        const totalItems = document.getElementById("totalItems");
-        const totalPrice = document.getElementById("totalPrice");
-        const saveButton = document.getElementById("saveButton");
-    
-        document.getElementById("addItemForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-            const name = document.getElementById("itemName").value;
-            const quantity = parseFloat(document.getElementById("itemQuantity").value);
-            const unit = document.getElementById("itemUnit").value;
-    
-            const newItem = { id: Date.now(), name, quantity, unit, price: 0, total: 0 };
-            itemList.push(newItem);
-            saveCurrentList();
-            updateShoppingList();
-            event.target.reset();
+      let itemList =
+        JSON.parse(localStorage.getItem('currentShoppingList')) || [];
+      const totalSection = document.getElementById('totalSection');
+      const totalItems = document.getElementById('totalItems');
+      const totalPrice = document.getElementById('totalPrice');
+      const saveButton = document.getElementById('saveButton');
+
+      document
+        .getElementById('addItemForm')
+        .addEventListener('submit', function (event) {
+          event.preventDefault();
+          const name = document.getElementById('itemName').value;
+          const quantity = parseFloat(
+            document.getElementById('itemQuantity').value
+          );
+          const unit = document.getElementById('itemUnit').value;
+
+          const newItem = {
+            id: Date.now(),
+            name,
+            quantity,
+            unit,
+            price: 0,
+            total: 0,
+          };
+          itemList.push(newItem);
+          saveCurrentList();
+          updateShoppingList();
+          event.target.reset();
         });
 
-        function updateShoppingList() {
-            const shoppingList = document.getElementById("shoppingList");
-            shoppingList.innerHTML = "";
-            itemList.forEach((item, index) => {
-                const listItem = document.createElement("li");
-                listItem.classList.add("list-group-item");
-                listItem.innerHTML = `
-                    <span>
-                        <strong>${index + 1}. ${item.name}</strong> - ${item.quantity} ${item.unit}
-                        <div class="product-info">Valor: R$${item.total.toFixed(2)}</div>
+      function updateShoppingList() {
+        const shoppingList = document.getElementById('shoppingList');
+        shoppingList.innerHTML = '';
+        itemList.forEach((item, index) => {
+          const listItem = document.createElement('li');
+
+          listItem.classList.add('list-group-item');
+          listItem.classList.add('d-flex');
+          listItem.classList.add('justify-content-between');
+          listItem.classList.add('align-items-center');
+
+          listItem.innerHTML = `
+                    <span class="flex-fill" onclick="openEditModal(${item.id})">
+                        <strong>${index + 1}. ${item.name}</strong> - ${
+            item.quantity
+          } ${item.unit}
+                        <div class="product-info">Valor: R$${item.total.toFixed(
+                          2
+                        )}</div>
                     </span>
                     <div>
-                        <button class="btn-no-border" onclick="openEditModal(${item.id})" title="Editar">
-                            <i class="fa-solid fa-pen-to-square"></i> 
+                        <button class="btn-no-border" onclick="openEditModal(${
+                          item.id
+                        })" title="Editar">
+                            <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button class="btn-no-border ms-2 text-danger" onclick="removeItem(${item.id})" title="Remover">
+                        <button class="btn-no-border ms-2 text-danger" onclick="removeItem(${
+                          item.id
+                        })" title="Remover">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
                 `;
-                shoppingList.appendChild(listItem);
-            });
-            calculateTotals();
-            toggleSaveButton();
-        }
-    
-        function toggleSaveButton() {
-            saveButton.style.display = itemList.length > 0 ? "block" : "none";
-        }
+          shoppingList.appendChild(listItem);
+        });
+        calculateTotals();
+        toggleSaveButton();
+      }
 
-        function openEditModal(id) {
-            const item = itemList.find(i => i.id === id);
-            if (item) {
-                document.getElementById("editItemId").value = item.id;
-                document.getElementById("editItemName").value = item.name;
-                document.getElementById("editItemQuantity").value = item.quantity;
-                document.getElementById("editItemPrice").value = item.price;
-    
-                const editItemPriceField = document.getElementById("editItemPrice");
-                editItemPriceField.addEventListener("focus", function() {
-                    if (parseFloat(editItemPriceField.value) === 0) {
-                        editItemPriceField.value = '';
-                    }
-                });
-    
-                new bootstrap.Modal(document.getElementById("editModal")).show();
-            }
-        }
+      function toggleSaveButton() {
+        saveButton.style.display = itemList.length > 0 ? 'block' : 'none';
+      }
 
-        document.getElementById("editItemForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-            const id = parseInt(document.getElementById("editItemId").value);
-            const name = document.getElementById("editItemName").value;
-            const quantity = parseFloat(document.getElementById("editItemQuantity").value);
-            const price = parseFloat(document.getElementById("editItemPrice").value);
-    
-            const item = itemList.find(i => i.id === id);
-            if (item) {
-                item.name = name;
-                item.quantity = quantity;
-                item.price = price || 0;
-                item.total = item.quantity * item.price;
+      function openEditModal(id) {
+        const item = itemList.find((i) => i.id === id);
+        if (item) {
+          document.getElementById('editItemId').value = item.id;
+          document.getElementById('editItemName').value = item.name;
+          document.getElementById('editItemQuantity').value = item.quantity;
+          document.getElementById('editItemPrice').value = item.price;
+
+          const editItemPriceField = document.getElementById('editItemPrice');
+          editItemPriceField.addEventListener('focus', function () {
+            if (parseFloat(editItemPriceField.value) === 0) {
+              editItemPriceField.value = '';
             }
-            saveCurrentList();
-            updateShoppingList();
-            bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
+          });
+
+          new bootstrap.Modal(document.getElementById('editModal')).show();
+        }
+      }
+
+      document
+        .getElementById('editItemForm')
+        .addEventListener('submit', function (event) {
+          event.preventDefault();
+          const id = parseInt(document.getElementById('editItemId').value);
+          const name = document.getElementById('editItemName').value;
+          const quantity = parseFloat(
+            document.getElementById('editItemQuantity').value
+          );
+          const price = parseFloat(
+            document.getElementById('editItemPrice').value
+          );
+
+          const item = itemList.find((i) => i.id === id);
+          if (item) {
+            item.name = name;
+            item.quantity = quantity;
+            item.price = price || 0;
+            item.total = item.quantity * item.price;
+          }
+          saveCurrentList();
+          updateShoppingList();
+          bootstrap.Modal.getInstance(
+            document.getElementById('editModal')
+          ).hide();
         });
 
-        function calculateTotals() {
-            const totalQuantity = itemList.length;
-            const totalCost = itemList.reduce((sum, item) => sum + item.total, 0);
-    
-            totalItems.textContent = totalQuantity;
-            totalPrice.textContent = totalCost.toFixed(2);
-        }
+      function calculateTotals() {
+        const totalQuantity = itemList.length;
+        const totalCost = itemList.reduce((sum, item) => sum + item.total, 0);
 
-        function removeItem(id) {
-            itemList = itemList.filter(item => item.id !== id);
-            saveCurrentList();
-            updateShoppingList();
-        }
+        totalItems.textContent = totalQuantity;
+        totalPrice.textContent = totalCost.toFixed(2);
+      }
 
-        function saveCurrentList() {
-            localStorage.setItem("currentShoppingList", JSON.stringify(itemList));
-        }
-
-        document.getElementById("listNameForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            const listName = document.getElementById("listName").value;
-            const totalValue = parseFloat(totalPrice.textContent);
-
-            if (!listName) {
-                alert("Por favor, insira um nome para a lista.");
-                return;
-            }
-
-            const zeroValueItems = itemList
-                .filter(item => item.price === 0)
-                .map(item => `${itemList.indexOf(item) + 1}. ${item.name}`);
-
-            if (zeroValueItems.length > 0) {
-                alert(`Os seguintes itens estão com valor zerado:\n${zeroValueItems.join('\n')}\nPor favor, edite-os antes de salvar.`);
-                return;
-            }
-
-            if (totalValue === 0) {
-                alert("O total da lista está zerado. Edite os itens para incluir valores antes de salvar.");
-                return;
-            }
-
-            const now = new Date();
-            const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ` +
-                                  `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-    
-            const newList = {
-                name: listName,
-                date: formattedDate,
-                items: itemList
-            };
-
-            const allLists = JSON.parse(localStorage.getItem("allShoppingLists")) || [];
-            allLists.push(newList);
-            localStorage.setItem("allShoppingLists", JSON.stringify(allLists));
-
-            itemList = [];
-            saveCurrentList();
-            updateShoppingList();
-    
-            alert(`Lista "${listName}" salva com sucesso! Pronto para iniciar uma nova lista.`);
-            bootstrap.Modal.getInstance(document.getElementById("listNameModal")).hide();
-        });
-
+      function removeItem(id) {
+        itemList = itemList.filter((item) => item.id !== id);
+        saveCurrentList();
         updateShoppingList();
+      }
 
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/super-compras/sw.js')
-                .then(registration => console.log('Service Worker registrado com sucesso:', registration))
-                .catch(error => console.log('Falha ao registrar o Service Worker:', error));
-        }
+      function saveCurrentList() {
+        localStorage.setItem('currentShoppingList', JSON.stringify(itemList));
+      }
+
+      document
+        .getElementById('listNameForm')
+        .addEventListener('submit', function (event) {
+          event.preventDefault();
+          const listName = document.getElementById('listName').value;
+          const totalValue = parseFloat(totalPrice.textContent);
+
+          if (!listName) {
+            alert('Por favor, insira um nome para a lista.');
+            return;
+          }
+
+          const zeroValueItems = itemList
+            .filter((item) => item.price === 0)
+            .map((item) => `${itemList.indexOf(item) + 1}. ${item.name}`);
+
+          if (zeroValueItems.length > 0) {
+            alert(
+              `Os seguintes itens estão com valor zerado:\n${zeroValueItems.join(
+                '\n'
+              )}\nPor favor, edite-os antes de salvar.`
+            );
+            return;
+          }
+
+          if (totalValue === 0) {
+            alert(
+              'O total da lista está zerado. Edite os itens para incluir valores antes de salvar.'
+            );
+            return;
+          }
+
+          const now = new Date();
+          const formattedDate =
+            `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
+              2,
+              '0'
+            )}-${String(now.getDate()).padStart(2, '0')} ` +
+            `${String(now.getHours()).padStart(2, '0')}:${String(
+              now.getMinutes()
+            ).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+
+          const newList = {
+            name: listName,
+            date: formattedDate,
+            items: itemList,
+          };
+
+          const allLists =
+            JSON.parse(localStorage.getItem('allShoppingLists')) || [];
+          allLists.push(newList);
+          localStorage.setItem('allShoppingLists', JSON.stringify(allLists));
+
+          itemList = [];
+          saveCurrentList();
+          updateShoppingList();
+
+          alert(
+            `Lista "${listName}" salva com sucesso! Pronto para iniciar uma nova lista.`
+          );
+          bootstrap.Modal.getInstance(
+            document.getElementById('listNameModal')
+          ).hide();
+        });
+
+      updateShoppingList();
+
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker
+          .register('/super-compras/sw.js')
+          .then((registration) =>
+            console.log('Service Worker registrado com sucesso:', registration)
+          )
+          .catch((error) =>
+            console.log('Falha ao registrar o Service Worker:', error)
+          );
+      }
     </script>
-</body>
+  </body>
 </html>
